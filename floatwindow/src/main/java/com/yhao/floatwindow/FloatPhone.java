@@ -26,11 +26,20 @@ class FloatPhone extends FloatView {
         mContext = applicationContext;
         mPermissionListener = permissionListener;
         mWindowManager = (WindowManager) applicationContext.getSystemService(Context.WINDOW_SERVICE);
+
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.type = WindowManager.LayoutParams.TYPE_SYSTEM_ERROR;
+        lp.flags = WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN;
+
         mLayoutParams = new WindowManager.LayoutParams();
         mLayoutParams.format = PixelFormat.RGBA_8888;
         mLayoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
                 | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-                | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS;
+                | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+                //full screen
+                |WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+                |WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
+        ;
         mLayoutParams.windowAnimations = 0;
     }
 

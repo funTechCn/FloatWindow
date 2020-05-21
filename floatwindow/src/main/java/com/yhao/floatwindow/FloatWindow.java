@@ -75,6 +75,7 @@ public class FloatWindow {
         PermissionListener mPermissionListener;
         ViewStateListener mViewStateListener;
 
+
         private B() {
 
         }
