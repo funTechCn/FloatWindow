@@ -55,6 +55,7 @@ public class IFloatWindowImpl extends IFloatWindow {
         mFloatView.setSize(mB.mWidth, mB.mHeight);
         mFloatView.setGravity(mB.gravity, mB.xOffset, mB.yOffset);
         mFloatView.setView(mB.mView);
+        mFloatView.setParms(mB.fullScreen,mB.focusable,mB.touchable);
         mFloatLifecycle = new FloatLifecycle(mB.mApplicationContext, mB.mShow, mB.mActivities, new LifecycleListener() {
             @Override
             public void onShow() {

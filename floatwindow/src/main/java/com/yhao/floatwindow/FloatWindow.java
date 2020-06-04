@@ -74,7 +74,9 @@ public class FloatWindow {
         boolean mDesktopShow;
         PermissionListener mPermissionListener;
         ViewStateListener mViewStateListener;
-
+        boolean fullScreen=true;
+        boolean focusable=false;
+        boolean touchable=false;
 
         private B() {
 
@@ -202,7 +204,15 @@ public class FloatWindow {
             return this;
         }
 
-        public void build() {
+        public B setFlag(boolean fullScreen, boolean focusable, boolean touchable) {
+            this.fullScreen=fullScreen;
+            this.focusable=focusable;
+            this.touchable=touchable;
+            return this;
+        }
+
+
+            public void build() {
             if (mFloatWindowMap == null) {
                 mFloatWindowMap = new HashMap<>();
             }

@@ -24,7 +24,9 @@ class FloatToast extends FloatView {
 
     private int mWidth;
     private int mHeight;
-
+    private boolean fullScreen=true;
+    private boolean focusable=false;
+    private boolean touchable=false;
 
     FloatToast(Context applicationContext) {
         toast = new Toast(applicationContext);
@@ -66,6 +68,18 @@ class FloatToast extends FloatView {
         }
     }
 
+    @Override
+    void setParms(boolean fullScreen, boolean focusable, boolean touchable) {
+        this.fullScreen=fullScreen;
+        this.focusable=focusable;
+        this.touchable=touchable;
+        try{
+            initTN();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
 
     private void initTN() {
         try {
@@ -77,12 +91,20 @@ class FloatToast extends FloatView {
             Field tnParamsField = mTN.getClass().getDeclaredField("mParams");
             tnParamsField.setAccessible(true);
             WindowManager.LayoutParams params = (WindowManager.LayoutParams) tnParamsField.get(mTN);
-            params.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
-                    | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-                    //full screen
-                    |WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
-                    |WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
-            ;
+
+            int pFlags= WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
+                    | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN;
+            if(fullScreen){
+                pFlags=pFlags|WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
+            }
+            if(!focusable){
+                pFlags=pFlags|WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
+            }
+            if(!touchable){
+                pFlags=pFlags|WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
+            }
+
+            params.flags =pFlags;
             params.width = mWidth;
             params.height = mHeight;
             params.windowAnimations = 0;

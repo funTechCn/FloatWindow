@@ -21,25 +21,33 @@ class FloatPhone extends FloatView {
     private int mX, mY;
     private boolean isRemove = false;
     private PermissionListener mPermissionListener;
+    private boolean fullScreen=true;
+    private boolean focusable=false;
+    private boolean touchable=false;
 
     FloatPhone(Context applicationContext, PermissionListener permissionListener) {
         mContext = applicationContext;
         mPermissionListener = permissionListener;
         mWindowManager = (WindowManager) applicationContext.getSystemService(Context.WINDOW_SERVICE);
 
-        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-        lp.type = WindowManager.LayoutParams.TYPE_SYSTEM_ERROR;
-        lp.flags = WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN;
-
         mLayoutParams = new WindowManager.LayoutParams();
         mLayoutParams.format = PixelFormat.RGBA_8888;
-        mLayoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
-                | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+
+        int pFlags= WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
                 | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
-                //full screen
-                |WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
-                |WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
-        ;
+                | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN;
+        if(fullScreen){
+            pFlags=pFlags|WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
+        }
+        if(!focusable){
+            pFlags=pFlags|WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
+        }
+        if(!touchable){
+            pFlags=pFlags|WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
+        }
+
+        mLayoutParams.flags =pFlags;
+
         mLayoutParams.windowAnimations = 0;
     }
 
@@ -128,6 +136,30 @@ class FloatPhone extends FloatView {
     public void dismiss() {
         isRemove = true;
         mWindowManager.removeView(mView);
+    }
+
+    @Override
+    void setParms(boolean fullScreen, boolean focusable, boolean touchable) {
+        this.fullScreen=fullScreen;
+        this.focusable=focusable;
+        this.touchable=touchable;
+
+
+        int pFlags= WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
+                | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+                | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN;
+        if(fullScreen){
+            pFlags=pFlags|WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
+        }
+        if(!focusable){
+            pFlags=pFlags|WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
+        }
+        if(!touchable){
+            pFlags=pFlags|WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
+        }
+        if(mLayoutParams!=null) {
+            mLayoutParams.flags = pFlags;
+        }
     }
 
     @Override

@@ -19,6 +19,8 @@ abstract class FloatView {
 
     abstract void dismiss();
 
+    abstract void setParms(boolean fullScreen,boolean focusable,boolean touchable);
+
     void updateXY(int x, int y) {
     }
 
